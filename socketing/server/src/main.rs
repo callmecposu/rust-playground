@@ -3,6 +3,7 @@ use std::{
     fs,
     io::{ prelude::*, BufReader },
     net::{ TcpListener, TcpStream },
+    thread
 };
 use serde::{ Deserialize, Serialize };
 use serde_json::Value;
@@ -160,6 +161,8 @@ fn main() {
         };
         println!("Connection established! - {:?}", stream);
         // stream.set_read_timeout(Some(Duration::from_micros(100))).unwrap();
-        handle_connection(stream);
+        thread::spawn(|| {
+            handle_connection(stream);
+        });
     }
 }
